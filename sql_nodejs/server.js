@@ -8,7 +8,13 @@ const createConnection = async () => {
   });
   //   USING db.query and db.execute is used to form query
   console.log("connection", await db.execute(`show databases`));
+
+  // if you will not write database in above part
+  await db.query(`CREATE DATABASE IF NOT EXISTS FirstDb`);
+
   console.log("connection", await db.query(`show databases`));
+  await db.query("USE FirstDb");
+
   //   CREATE TABLE
   try {
     await db.query(`
@@ -21,22 +27,22 @@ const createConnection = async () => {
     // YOU CAN USE IF EXISITS TO MAKE SURE ERROR DOES NOT OCCUR
     // INSERT SOME DATA
     let data = [10, 1, "mohit"];
-    // await db.query(
-    // `
-    // INSERT INTO mysql_project(_Id,data,string) VALUES (?)
-    // `,
-    //   [data]
-    // );
-    // data = [
-    //   [1, 1, "mohit"],
-    //   [2, 1, "mohit"],
-    // ];
-    // await db.query(
-    //   `
-    //     INSERT INTO mysql_project(_Id,data,string) VALUES ?
-    //     `,
-    //   [data]
-    // );
+    await db.query(
+      `
+    INSERT INTO mysql_project(_Id,data,string) VALUES (?)
+    `,
+      [data]
+    );
+    data = [
+      [1, 1, "mohit"],
+      [2, 1, "mohit"],
+    ];
+    await db.query(
+      `
+        INSERT INTO mysql_project(_Id,data,string) VALUES ?
+        `,
+      [data]
+    );
 
     // INSERT IGNORE IS USED TO SKIP THE DATA IF ALREADY PRESENT
     data = [
